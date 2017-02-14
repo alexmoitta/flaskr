@@ -9,9 +9,9 @@ from numpy import array
 def partition(array_numbers,pivot,r):
 #falta colocar o caso base de um elemento ainda e a recursao
 #   r = len(array_numbers)
-    if r <= 1:
-        return
     i = pivot + 1
+    if r - i <= 1:
+        return
     tmp_swap = 0
     for j in range(pivot+1,r,1):
         if array_numbers[j] < array_numbers[pivot]:
@@ -22,9 +22,10 @@ def partition(array_numbers,pivot,r):
     tmp_swap = array_numbers[pivot]
     array_numbers[pivot] = array_numbers[i-1]
     array_numbers[i-1] = tmp_swap
-    partition(array_numbers,i,r-i) #chamada para a direita
+    partition(array_numbers,i,r) #chamada para a direita
     partition(array_numbers,0,i-1) #chamada para a esquerda
     print array_numbers
+    return
 
 
 
