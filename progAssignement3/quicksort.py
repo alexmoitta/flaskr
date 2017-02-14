@@ -10,8 +10,8 @@ def partition(array_numbers,pivot,r):
 #falta colocar o caso base de um elemento ainda e a recursao
 #   r = len(array_numbers)
     i = pivot + 1
-    if r - i <= 1:
-        return
+    if (r - i) < 1:
+        return 1
     tmp_swap = 0
     for j in range(pivot+1,r,1):
         if array_numbers[j] < array_numbers[pivot]:
@@ -23,21 +23,18 @@ def partition(array_numbers,pivot,r):
     array_numbers[pivot] = array_numbers[i-1]
     array_numbers[i-1] = tmp_swap
     partition(array_numbers,i,r) #chamada para a direita
-    partition(array_numbers,0,i-1) #chamada para a esquerda
+#    partition(array_numbers,0,i-1) #chamada para a esquerda
     print array_numbers
-    return
+    return i-1
 
-
-
-
-
-
-
-
+def quicksort_by_me(array_numbers,pivot,r):
+    r = len(array_num_input)
+    while r > 1:
+        r = partition(array_num_input,0,r)
 
 workdirectory = "./workdir"
 name_of_file = "testePequeno.txt"
-#nameoffile = "_32387ba40b36359a38625cbb397eee65_QuickSort.txt"
+#name_of_file = "_32387ba40b36359a38625cbb397eee65_QuickSort.txt"
 numbers_file = workdirectory + "/" + name_of_file
 outputnameofile = workdirectory + "/" + "outputorderednumbers.txt"
 
@@ -59,5 +56,15 @@ array_num_input = array(number_list, dtype = 'L')
 
 print "File loading ended."
 
-partition(array_num_input,0,len(array_num_input))
+quicksort_by_me(array_num_input,0,len(array_num_input))
 
+file_pointer = open(outputnameofile,mode='w')
+
+
+size_of_file = len(array_num_input)
+for x in range(0,size_of_file,1):
+    file_pointer.write(str(array_num_input[x]) + '\n')
+
+file_pointer.close()
+
+print "Output was generated"
