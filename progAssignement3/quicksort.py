@@ -10,8 +10,10 @@ def partition(array_numbers,pivot,r, number_comparisons):
 #falta colocar o caso base de um elemento ainda e a recursao
 #   r = len(array_numbers)
     i = pivot + 1
-    if (r - i) < 1:
-        return number_comparisons+0 #no comparison.
+#    if (r - i) < 1:
+#        return pivot #nao vai fazer nada com isso
+#    else:
+    number_comparisons += r - pivot -1 # se vai ter comparacao, ja incrementa
     tmp_swap = 0
     for j in range(pivot+1,r,1):
         if array_numbers[j] < array_numbers[pivot]:
@@ -22,24 +24,45 @@ def partition(array_numbers,pivot,r, number_comparisons):
     tmp_swap = array_numbers[pivot]
     array_numbers[pivot] = array_numbers[i-1]
     array_numbers[i-1] = tmp_swap
-    number_comparisons += partition(array_numbers,pivot,i,number_comparisons)
-    if (r - i <= 1 ):
-        return number_comparisons + (r - 1)
-    else:
-        number_comparisons += partition(array_numbers,i,r,number_comparisons) #chamada para a direita
-    print array_numbers
-    return number_comparisons+(r-pivot-1) #this should include the numbers of this recursion
 
-def quicksort_by_me(array_numbers,pivot,r,number_comparisons):
-    r = len(array_num_input)
-    while r > 1:
-        r = partition(array_num_input,0,r,number_comparisons)
-    print "quantidade de inversoes: " + str(r)
+    #essa partition e so para tratar os elementos que eram menores que o pivot
+    #nao deve fazer diferenca na estrutura ou iteracao principal
+#    i_new = partition(array_numbers,pivot,i-1,number_comparisons)
+    print array_numbers
+#    return i+1 esse era o retorno do livro
+    return i
+#    if i_new < i:
+#        i = i_new+1   #poderia retornar i_new diretamente, mas assim fica mais facil de entender o que esta
+                        #acontecendo para mim
+#        return i
+#    else:
+#        return i_new
+#    if (r - i <= 2 ): #condicao de parada ruim
+#    return number_comparisons
+#    else:
+#    number_comparisons += partition(array_numbers,i,r,number_comparisons) #chamada para a direita
+
+
+def quicksort_by_me(array_numbers,number_comparisons):
+    total_size = len(array_num_input)
+    start_pivot = 0
+    while start_pivot < total_size-1:
+        start_pivot = partition(array_num_input,start_pivot,total_size,number_comparisons)
+#    print "quantidade de inversoes: " + str(r)
+
+
+def quicksort_by_the_book(array_numbers, p, r, number_comparisons):
+    if p < r:
+        q = partition(array_num_input,p,r,number_comparisons)
+        quicksort_by_the_book(array_num_input,p,q-1,number_comparisons)
+        quicksort_by_the_book(array_num_input,q,r,number_comparisons)
+#    quicksort_by_the_book(array_num_input,q+1,r,number_comparisons)
+
 
 
 workdirectory = "./workdir"
-name_of_file = "testePequeno.txt"
-#name_of_file = "_32387ba40b36359a38625cbb397eee65_QuickSort.txt"
+#name_of_file = "testePequeno.txt"
+name_of_file = "_32387ba40b36359a38625cbb397eee65_QuickSort.txt"
 numbers_file = workdirectory + "/" + name_of_file
 outputnameofile = workdirectory + "/" + "outputorderednumbers.txt"
 
@@ -62,7 +85,7 @@ array_num_input = array(number_list, dtype = 'L')
 print "File loading ended."
 
 number_comparisons = 0
-quicksort_by_me(array_num_input,0,len(array_num_input),number_comparisons)
+quicksort_by_the_book(array_num_input,0, len(array_num_input), number_comparisons)
 
 file_pointer = open(outputnameofile,mode='w')
 
