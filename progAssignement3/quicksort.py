@@ -1,19 +1,15 @@
 #!/usr/bin/python
 from numpy import array
-
+import ComparisonCounter
 
 #task: number of comparisons
 
 
 
 def partition(array_numbers,pivot,r, number_comparisons):
-#falta colocar o caso base de um elemento ainda e a recursao
-#   r = len(array_numbers)
     i = pivot + 1
-#    if (r - i) < 1:
-#        return pivot #nao vai fazer nada com isso
-#    else:
-    number_comparisons += r - pivot -1 # se vai ter comparacao, ja incrementa
+    if (r-pivot-1) >= 1: #so incrementa se fizer sentido
+        number_comparisons.add_value(r - pivot -1) # se vai ter comparacao, ja incrementa
     tmp_swap = 0
     for j in range(pivot+1,r,1):
         if array_numbers[j] < array_numbers[pivot]:
@@ -25,38 +21,38 @@ def partition(array_numbers,pivot,r, number_comparisons):
     array_numbers[pivot] = array_numbers[i-1]
     array_numbers[i-1] = tmp_swap
 
-    #essa partition e so para tratar os elementos que eram menores que o pivot
-    #nao deve fazer diferenca na estrutura ou iteracao principal
-#    i_new = partition(array_numbers,pivot,i-1,number_comparisons)
     print array_numbers
-#    return i+1 esse era o retorno do livro
     return i
-#    if i_new < i:
-#        i = i_new+1   #poderia retornar i_new diretamente, mas assim fica mais facil de entender o que esta
-                        #acontecendo para mim
-#        return i
-#    else:
-#        return i_new
-#    if (r - i <= 2 ): #condicao de parada ruim
-#    return number_comparisons
-#    else:
-#    number_comparisons += partition(array_numbers,i,r,number_comparisons) #chamada para a direita
 
 
-def quicksort_by_me(array_numbers,number_comparisons):
-    total_size = len(array_num_input)
-    start_pivot = 0
-    while start_pivot < total_size-1:
-        start_pivot = partition(array_num_input,start_pivot,total_size,number_comparisons)
-#    print "quantidade de inversoes: " + str(r)
 
 
-def quicksort_by_the_book(array_numbers, p, r, number_comparisons):
+def quicksort_by_the_book(array_num_input, p, r, number_comparisons):
     if p < r:
         q = partition(array_num_input,p,r,number_comparisons)
         quicksort_by_the_book(array_num_input,p,q-1,number_comparisons)
         quicksort_by_the_book(array_num_input,q,r,number_comparisons)
 #    quicksort_by_the_book(array_num_input,q+1,r,number_comparisons)
+
+
+def swap_first_last(array_numbers,p,r):
+    tmp_swap = array_numbers[r-1]
+    array_numbers[r-1] = array_numbers[p]
+    array_numbers[p] = tmp_swap
+
+def quicksort_by_the_book_last(array_numbers, p, r, number_comparisons):
+    if p < r:
+        swap_first_last(array_numbers,p,r)
+        q = partition(array_num_input,p,r,number_comparisons)
+
+#        swap_first_last(array_numbers,p,q-1)
+        quicksort_by_the_book_last(array_num_input,p,q-1,number_comparisons)
+
+#        swap_first_last(array_numbers,q,r)
+        quicksort_by_the_book_last(array_num_input,q,r,number_comparisons)
+
+
+
 
 
 
@@ -81,14 +77,22 @@ for line in file_pointer:
 file_pointer.close()
 
 array_num_input = array(number_list, dtype = 'L')
+array_num_input_last = array(number_list, dtype = 'L')
 
 print "File loading ended."
 
-number_comparisons = 0
-quicksort_by_the_book(array_num_input,0, len(array_num_input), number_comparisons)
+number_comparisons = ComparisonCounter.ComparisonCounter()
+number_comparisons_last = ComparisonCounter.ComparisonCounter()
+
+#quicksort_by_the_book(array_num_input,0, len(array_num_input), number_comparisons)
+quicksort_by_the_book_last(array_num_input_last,0, len(array_num_input), number_comparisons_last)
+
 
 file_pointer = open(outputnameofile,mode='w')
 
+print "number of comparisons is: " + str(number_comparisons.get_value())
+
+print "number of comparisons swaping first with last is: " + str(number_comparisons_last.get_value())
 
 size_of_file = len(array_num_input)
 for x in range(0,size_of_file,1):
