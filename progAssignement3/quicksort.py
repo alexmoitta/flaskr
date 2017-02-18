@@ -40,16 +40,16 @@ def swap_first_last(array_numbers,p,r):
     array_numbers[r-1] = array_numbers[p]
     array_numbers[p] = tmp_swap
 
-def quicksort_by_the_book_last(array_numbers, p, r, number_comparisons):
+def quicksort_by_the_book_last(array_num_input_last, p, r, number_comparisons_last):
     if p < r:
-        swap_first_last(array_numbers,p,r)
-        q = partition(array_num_input,p,r,number_comparisons)
+        swap_first_last(array_num_input_last,p,r)
+        q = partition(array_num_input_last,p,r,number_comparisons_last)
 
 #        swap_first_last(array_numbers,p,q-1)
-        quicksort_by_the_book_last(array_num_input,p,q-1,number_comparisons)
+        quicksort_by_the_book_last(array_num_input_last,p,q-1,number_comparisons_last)
 
 #        swap_first_last(array_numbers,q,r)
-        quicksort_by_the_book_last(array_num_input,q,r,number_comparisons)
+        quicksort_by_the_book_last(array_num_input_last,q,r,number_comparisons_last)
 
 
 
@@ -84,8 +84,8 @@ print "File loading ended."
 number_comparisons = ComparisonCounter.ComparisonCounter()
 number_comparisons_last = ComparisonCounter.ComparisonCounter()
 
-#quicksort_by_the_book(array_num_input,0, len(array_num_input), number_comparisons)
-quicksort_by_the_book_last(array_num_input_last,0, len(array_num_input), number_comparisons_last)
+quicksort_by_the_book(array_num_input,0, len(array_num_input), number_comparisons)
+quicksort_by_the_book_last(array_num_input_last,0, len(array_num_input_last), number_comparisons_last)
 
 
 file_pointer = open(outputnameofile,mode='w')
