@@ -32,36 +32,36 @@ def remove_edge_by_node_names(edges, old_node_name_0, old_node_name_1, new_node_
     for i in range(0,edges_size,1):
 
         if edges[i][0] == old_node_name_0 and edges[i][1] == old_node_name_1:
-            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will note be replicated\n"
+            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will not be replicated\n"
             continue
 
         if edges[i][0] == old_node_name_1 and edges[i][1] == old_node_name_0:
-            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will note be replicated\n"
+            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will not be replicated\n"
             continue
 
         if edges[i][0] == old_node_name_0:
-            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will note be replicated\n"
+            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will not be replicated\n"
             print "a new item will be created, instead."
             #I have to create a new item
             new_edges.append((new_node_name,edges[i][1]))
             continue
 
         if edges[i][1] == old_node_name_0:
-            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will note be replicated\n"
+            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will not be replicated\n"
             print "a new item will be created, instead."
             #I have to create a new item
             new_edges.append((edges[i][0],new_node_name))
             continue
 
         if edges[i][0] == old_node_name_1:
-            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will note be replicated\n"
+            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will not be replicated\n"
             print "a new item will be created, instead."
             #I have to create a new item
             new_edges.append((new_node_name,edges[i][1]))
             continue
 
         if edges[i][1] == old_node_name_1:
-            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will note be replicated\n"
+            print "Edge " + str(edges[i][0]) + " " + str(edges[i][1]) + " will not be replicated\n"
             print "a new item will be created, instead."
             #I have to create a new item
             new_edges.append((edges[i][0],new_node_name))
@@ -75,6 +75,8 @@ def remove_edge_by_node_names(edges, old_node_name_0, old_node_name_1, new_node_
 
 
 def pick_random_edge(edges):
+    random.seed()
+    print "Maximum is: " + str (len(edges)-1)
     return random.randint(0,len(edges)-1)
 
 #this code assumes that the list is ordered
@@ -118,7 +120,7 @@ def merge_nodes(graph_network,edges,random_edge):
 
     #cleaning edges
     edges = remove_edge_by_node_names(edges, old_name_0, old_name_1, new_node_name)
-    edges = deduplicate(edges)
+#    edges = deduplicate(edges)
 
 
     #cleaning graph
@@ -154,7 +156,8 @@ def load_graph_edges():
     for line in lines:
         if line != "\n":
 #            string_parsed = formatter.parse(line)
-            node_list = [int(s) for s in line.split() if s.isdigit()]
+#            node_list = [int(s) for s in line.split() if s.isdigit()]
+            node_list = [str(s) for s in line.split() if s.isalnum()]
             create_edges_by_line(node_list,edges)
 
 
@@ -163,7 +166,6 @@ def load_graph_edges():
 
 
 
-random.seed()
 
 graph_network = {"1" : ["2", "3"],
                  "2" : ["1","3"],
@@ -171,23 +173,25 @@ graph_network = {"1" : ["2", "3"],
 
 
 
-edges = []
-edges.append(("3","1"))
-edges.append(("3","2"))
-edges.append(("1","2"))
-edges.append(("1","3"))
-edges.append(("2","1"))
-edges.append(("2","3"))
+#edges = []
+#edges.append(("3","1"))
+#edges.append(("3","2"))
+#edges.append(("1","2"))
+#edges.append(("1","3"))
+#edges.append(("2","1"))
+#edges.append(("2","3"))
 
 edges = []
 
 edges = load_graph_edges()
 
+orig_edges = list(edges)
+
 print "edges: before merge"
 for i in range(0,len(edges),1):
     print edges[i]
 
-while len(edges) > 2:
+while len(edges) > 6:
     random_edge = pick_random_edge(edges)
     print "Edge id randomly selected: " + str(random_edge)
     print "Those nodes will be merged: " + edges[random_edge][0] + " " + edges[random_edge][1]
