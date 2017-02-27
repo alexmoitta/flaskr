@@ -10,6 +10,7 @@ for line in data:
     if line != "\n":
         lst = [int(s) for s in line.split()]
         G[lst[0]] = lst[1:]
+data.close()
 
 def choose_random_key(G):
     v1 = random.choice(list(G.keys()))
