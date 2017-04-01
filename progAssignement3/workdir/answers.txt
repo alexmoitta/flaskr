@@ -1,3 +1,0 @@
-ex1) number of comparisons is: 162085
-ex2) number of comparisons swaping first with last is: 164123
-ex3) 138382
